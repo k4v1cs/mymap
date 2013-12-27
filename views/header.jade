@@ -1,0 +1,9 @@
+div.header
+    a.menu(href="/lands") Királyságok
+    if user.role === 'ADMIN'
+        a.menu(href="/lands/add") Új terület
+    div.line
+    img.logo(src="/images/static/logo.png")
+    div.user
+        span Üdv #{user.username}
+        a(href="/logout") Kilépés

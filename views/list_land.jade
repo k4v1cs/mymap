@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    h1 nos
+    each val in lands
+        img.picture(src='../images/' + val.img)
+        p=val.type

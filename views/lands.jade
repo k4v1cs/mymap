@@ -1,0 +1,29 @@
+extends layout
+
+block content
+    div.container
+        h1 Királyságok
+        table.kingdoms(cellpadding=3, cellspacing=0)
+            tr.x
+                td
+                - for (j=1; j<=73; j++)
+                    td(class = "x-"+j)
+                        div=j
+            - for (i=1; i<=22; i++)
+                tr
+                    td(class = "y-"+i)
+                        div=i
+                    - for (j=1; j<=73; j++)
+                        - var key = j + '-' + i;
+                        if kingdomCounts.get(key)
+                            - var count = kingdomCounts.get(key).count
+                        else
+                            - var count = 0
+                        td.kingdom(data-x=j, data-y=i, data-count=count)
+                            a(href="/lands/" + j + "/" + i)
+                            div.info-bar(style="display: none")
+                                div="X: " + j
+                                div="Y: " + i
+                                div="Össz: " + count
+                                <div class='arrow'>
+            
