@@ -12,6 +12,7 @@ var express = require('express')
   , everyauth = require('everyauth')
   , flash = require('connect-flash')
   , Land = require('./models/Land.js')
+  , Ruin = require('./models/Ruin.js')
   , User = require('./models/User.js')
   , imgUtil = require('./utils/imageUtil.js');
 
@@ -189,13 +190,64 @@ app.post('/lands/add', checkAuth, checkAdmin, function(req, res) {
     });
 });
 
+app.post('/ruins/add', checkAuth, checkAdmin, function(req, res) {
+
+    var coordinate = req.body.x + "-" + req.body.y + "-" + req.body.z;
+    console.log("Saving new ruin: " + coordinate);
+    
+    var newRuin = {
+        x: req.body.x,
+        y: req.body.y,
+        z: req.body.z,
+        level: req.body.level,
+        agressive: req.body.agressive ? true : false
+    };
+    
+    Ruin.addRuin(newRuin, function(err, ruin) {
+        if (err) {
+            console.log("Error: ", err);
+            var errorMessage = "'" + coordinate + "' romot nem sikerült elmenteni!";
+            res.send(errorMessage, 500);
+        } else {
+            res.send(ruin);
+        }
+    });
+});
+
+app.post('/ruins/remove', checkAuth, checkAdmin, function(req, res) {
+    var coordinate = req.body.x + "-" + req.body.y + "-" + req.body.z;
+    console.log("Removing ruin: " + coordinate);
+    
+    Ruin.removeRuin(req.body.x, req.body.y, req.body.z, function(err) {
+        if(err) {
+            console.log("Error: ", err);
+            var errorMessage = "'" + coordinate + "' romot nem sikerült eltávolítani!";
+            res.send(errorMessage, 500);
+        } else {
+            res.send(200);
+        }
+    });
+});
+
 app.get('/lands', checkAuth, function(req, res) {
         Land.findKingdomCounts(function(err, result) {
             if(err) {
                 console.log("Error: ", err);
                 res.redirect('/error');
             } else {
-                res.render("lands", {title: "MyMap - Királyságok", kingdomCounts: result});
+                res.render("map", {title: "MyMap - Királyságok", kingdomCounts: result, mapType: 'lands'});
+            }
+        })
+    }
+);
+
+app.get('/ruins', checkAuth, function(req, res) {
+        Ruin.findKingdomCounts(function(err, result) {
+            if(err) {
+                console.log("Error: ", err);
+                res.redirect('/error');
+            } else {
+                res.render("map", {title: "MyMap - Királyságok", kingdomCounts: result, mapType: 'ruins'});
             }
         })
     }
@@ -210,11 +262,30 @@ app.get('/lands/:x/:y', checkAuth, function(req, res) {
             console.log("Error: ", err);
             res.redirect('/error');
         } else {
-            res.render("kingdom", {
-                title: "MyMap - " + x + "-" + y + " királyság",
+            res.render("lands", {
+                title: "MyMap - " + x + "-" + y + " királyság területei",
                 x: x,
                 y: y,
                 lands: kingdomMap
+            });
+        }
+    });
+});
+
+app.get('/ruins/:x/:y', checkAuth, function(req, res) {
+    var x = req.params.x;
+    var y = req.params.y;
+    
+    Ruin.findKingdom(x, y, function(err, kingdomMap) {
+        if(err) {
+            console.log("Error: ", err);
+            res.redirect('/error');
+        } else {
+            res.render("ruins", {
+                title: "MyMap - " + x + "-" + y + " királyság romjai",
+                x: x,
+                y: y,
+                ruins: kingdomMap
             });
         }
     });

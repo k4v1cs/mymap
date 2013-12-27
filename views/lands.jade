@@ -1,29 +1,1 @@
-extends layout
-
-block content
-    div.container
-        h1 Királyságok
-        table.kingdoms(cellpadding=3, cellspacing=0)
-            tr.x
-                td
-                - for (j=1; j<=73; j++)
-                    td(class = "x-"+j)
-                        div=j
-            - for (i=1; i<=22; i++)
-                tr
-                    td(class = "y-"+i)
-                        div=i
-                    - for (j=1; j<=73; j++)
-                        - var key = j + '-' + i;
-                        if kingdomCounts.get(key)
-                            - var count = kingdomCounts.get(key).count
-                        else
-                            - var count = 0
-                        td.kingdom(data-x=j, data-y=i, data-count=count)
-                            a(href="/lands/" + j + "/" + i)
-                            div.info-bar(style="display: none")
-                                div="X: " + j
-                                div="Y: " + i
-                                div="Össz: " + count
-                                <div class='arrow'>
-            
+extends layoutblock content    div.container        h1= x + "-" + y + " királyság területei"        table.kingdom(cellspacing=0)            - for(i = 1; i<= 7; i++)                tr                    - for(j = 1; j<= 9; j++)                        - var z = (i-1) * 9 + j                        if lands.get(z)                            - var land = lands.get(z)                            td(class = land.type.replace(" ", "-").toLowerCase())                                a(data-lightbox = "lands", href = "../../images/" + land.picture)                                    =z                                    div.level= land.fields + "/" + land.city_level                                    div.stats                                        div                                            img(src="/images/static/terraformer.png")                                            span=land.obstacles                                        div                                            img(src="/images/static/grain.png")                                            span=land.grain.outer                                        div                                            img(src="/images/static/iron.png")                                            span=land.iron.outer                                        div                                            img(src="/images/static/stone.png")                                            span=land.stone.inner + "/" + land.stone.outer                        else                            td=z                                                                

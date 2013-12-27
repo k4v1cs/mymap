@@ -1,0 +1,35 @@
+﻿extends layout
+
+block content
+    div.container
+        h1= x + "-" + y + " királyság romjai"
+        table.kingdom.ruins(cellspacing=0)
+            - for(i = 1; i<= 7; i++)
+                tr
+                    - for(j = 1; j<= 9; j++)
+                        - var z = (i-1) * 9 + j
+                        if ruins.get(z)
+                            - var ruin = ruins.get(z)
+                            td.ruin(class="#{ruin.agressive === true ? 'agressive' : ''}")
+                                =z
+                                div.level= ruin.level
+                                if user.role === 'ADMIN'
+                                    a.remove(href="/ruins/remove", data-x = x, data-y = y, data-z = z) X
+                                +addRuin(x, y, z)
+                        else
+                            td
+                                =z
+                                +addRuin(x, y, z)
+                            
+
+mixin addRuin(x, y, z)
+    if user.role === 'ADMIN'
+        div(style="display: none").add-ruin
+            form(action="/ruins/add")
+                input(type="hidden", name="x", value=x)
+                input(type="hidden", name="y", value=y)
+                input(type="hidden", name="z", value=z)
+                input(type="text", name="level")
+                label Agr.
+                input(type="checkbox", name="agressive", value="true")
+                input.btn(type="submit", value="OK")
