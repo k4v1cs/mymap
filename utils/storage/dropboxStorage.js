@@ -18,7 +18,6 @@ function uploadImage(imagePath, callback) {
         }
 
         console.log("File saved as revision " + stat.revisionTag);
-        getUrl(name, function(err, url) {console.log("url: %s",url)});
     });
 };
 

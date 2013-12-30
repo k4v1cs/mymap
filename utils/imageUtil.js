@@ -21,17 +21,16 @@ module.exports.saveImage = function saveImage(buffer, filename) {
     easyimg.convert({src: srcRealPath, dst: destRealPath}, function(err, image) {
          if (err) throw err;
          
-         var convertedImgPath = path.join(DEST_DIR, image.name.replace(DEST_EXT, EXT));
-         console.log('Converted image: %s', convertedImgPath);
+         console.log('Converted image: %s', srcRealPath);
          
-         fs.unlink(convertedImgPath, function (err) {
+         fs.unlink(srcRealPath, function (err) {
             if (err) throw err;
-            console.log('Successfully deleted: %s', convertedImgPath);
+            console.log('Successfully deleted: %s', srcRealPath);
         });
         
         storage.uploadImage(destRealPath, function(err) {
                 if(err) throw err;
-            });
+        });
     });
     
     return filename + DEST_EXT;

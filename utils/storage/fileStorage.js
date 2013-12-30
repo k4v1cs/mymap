@@ -1,7 +1,7 @@
 var fs = require('fs'),
     path = require('path');
     
-var DEST_DIR = "./public/images";
+var DEST_DIR = "./public/images/Dropbox/Apps/map";
 
 module.exports.moveImage = function(imgPath, callback) {
         var srcDir = path.dirname(imgPath);
@@ -15,5 +15,5 @@ module.exports.moveImage = function(imgPath, callback) {
     }
     
 module.exports.getUrl = function(name) {
-        return "/images/" + name;
+        return "/images/Dropbox/Apps/map/" + name;
     }
