@@ -330,6 +330,7 @@ app.get('/ruins/:x/:y', checkAuth, function(req, res) {
     });
 });
 
-http.createServer(app).listen(5000, function(){
-  console.log('Express server listening on port ' + 5000);
+var port = process.env.port || 5000;
+http.createServer(app).listen(port, function(){
+  console.log('Express server listening on port ' + port);
 });
