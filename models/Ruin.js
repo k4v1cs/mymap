@@ -48,10 +48,11 @@ function remove(x, y, z, callback) {
     });
 }
 
-function findKingdomCounts(callback) {
+function findKingdomCounts(level, callback) {
+   var levelCondition = level != null ? {level: level} : {};
    var group = {
        key: {x: 1, y:1},
-       cond: {},
+       cond: levelCondition,
        reduce: function ( curr, result ) {
                 result.count++;
        },

@@ -6,6 +6,9 @@ block content
         div.type-btns
             a.btn(href="/lands", class="#{mapType === 'lands' ? 'selected' : ''}") Területek
             a.btn(href="/ruins", class="#{mapType === 'ruins' ? 'selected' : ''}") Romok
+        div.type-btns
+            - for(l=1; l<=6; l++)
+                a.btn.small(href="?level=#{l}", class="#{query.level == l ? 'selected' : ''}")=l
         table.kingdoms(cellpadding=3, cellspacing=0, class="#{mapType}")
             tr.x
                 td

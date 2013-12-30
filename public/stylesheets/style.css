@@ -132,6 +132,10 @@ img.picture {
     min-width: 120px;
 }
 
+.type-btns .btn.small {
+    min-width: 15px;
+}
+
 /*clearfix*/
 
 .clearfix:after {
@@ -200,7 +204,7 @@ div.error-msg {
 }
 /*lands table*/
 .kingdoms {
-    margin-top: 50px;
+    margin-top: 10px;
     border: 2px solid rgb(114, 113, 85) !important;
 }
 .kingdoms tr:first-child td {

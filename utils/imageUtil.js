@@ -1,31 +1,44 @@
 var fs = require('fs'),
-    easyimg = require('easyimage');
+    path = require('path'),
+    easyimg = require('easyimage'),
+    storage = require('./storage/storage.js');
 
-var DEST_DIR = './public/images/',
+var DEST_DIR = path.join(__dirname, 'temp'),
     EXT = ".png",
     DEST_EXT = ".jpg";
 
-module.exports.saveImage = function saveImage(buffer, filename, destDir) {
-    var dir = DEST_DIR;
-    if(destDir) {
-        dir = destDir;
-    }
+module.exports.saveImage = function saveImage(buffer, filename) {
     
-    var srcPath = dir + filename + EXT;
+    makeTempDir();
+    
+    var srcPath = path.join(DEST_DIR, filename + EXT);
     fs.writeFileSync(srcPath, buffer);
-    var realPath = fs.realpathSync(srcPath);
+    
+    var srcRealPath = fs.realpathSync(srcPath);
+    var destRealPath = srcRealPath.replace(EXT, DEST_EXT);
     console.log('image written: ' + srcPath);
     
-    easyimg.convert({src: realPath, dst: realPath.replace(EXT, DEST_EXT)}, function(err, image) {
+    easyimg.convert({src: srcRealPath, dst: destRealPath}, function(err, image) {
          if (err) throw err;
          
-         var convertedImgPath = dir + image.name.replace(DEST_EXT, EXT);
-         console.log('Converted image: '+ convertedImgPath);
+         var convertedImgPath = path.join(DEST_DIR, image.name.replace(DEST_EXT, EXT));
+         console.log('Converted image: %s', convertedImgPath);
+         
          fs.unlink(convertedImgPath, function (err) {
             if (err) throw err;
-            console.log('successfully deleted' + convertedImgPath);
+            console.log('Successfully deleted: %s', convertedImgPath);
         });
+        
+        storage.uploadImage(destRealPath, function(err) {
+                if(err) throw err;
+            });
     });
     
     return filename + DEST_EXT;
+}
+
+function makeTempDir() {
+    if(!fs.existsSync(DEST_DIR)) {
+        fs.mkdirSync(DEST_DIR);
+    }
 }

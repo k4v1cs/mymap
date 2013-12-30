@@ -79,10 +79,11 @@ function findAll(callback) {
 	});
 };
 
-function findKingdomCounts(callback) {
+function findKingdomCounts(level, callback) {
+   var levelCondition = level != null ? {city_level: level} : {};
    var group = {
        key: {x: 1, y:1},
-       cond: {},
+       cond: levelCondition,
        reduce: function ( curr, result ) {
                 result.count++;
        },

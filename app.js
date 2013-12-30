@@ -9,12 +9,14 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , fs = require('fs')
+  , async = require('async')
   , everyauth = require('everyauth')
   , flash = require('connect-flash')
   , Land = require('./models/Land.js')
   , Ruin = require('./models/Ruin.js')
   , User = require('./models/User.js')
-  , imgUtil = require('./utils/imageUtil.js');
+  , imgUtil = require('./utils/imageUtil.js')
+  , storage = require('./utils/storage/storage.js');
 
 /*everyauth*/
 
@@ -103,8 +105,8 @@ app.use(app.router);
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
-}
-   
+} 
+ 
 function checkAuth(req, res, next) {
   if (!req.user) {
     req.flash('message', 'Jelentkezz be!');
@@ -121,6 +123,33 @@ function checkAdmin(req, res, next) {
   } else {
     next();
   }
+}
+
+function localQuery(req, res, next) {
+  res.locals.query = req.query;
+  next();
+};
+
+function fillImageUrls(kingdomMap, callback) {
+    var calls = [];
+    kingdomMap.forEach(function(value, key) {
+        calls.push(function(callbackPush) {
+            console.log("pushing element %s", value.picture);
+            storage.getImageUrl(value.picture, function(url) {
+                value.pictureUrl = url;
+                callbackPush(null, url);
+            });
+        });
+    });
+    
+    async.parallel(calls, function(err, result) {
+        /* this code will run after all calls finished the job or
+           when any of the calls passes an error */
+        if (err)
+            callback(err);
+        else
+            callback();
+    });
 }
 
 app.get('/', checkAuth, routes.index);
@@ -229,8 +258,9 @@ app.post('/ruins/remove', checkAuth, checkAdmin, function(req, res) {
     });
 });
 
-app.get('/lands', checkAuth, function(req, res) {
-        Land.findKingdomCounts(function(err, result) {
+app.get('/lands', checkAuth, localQuery, function(req, res) {
+        var level = req.query.level ? parseInt(req.query.level) : null;
+        Land.findKingdomCounts(level, function(err, result) {
             if(err) {
                 console.log("Error: ", err);
                 res.redirect('/error');
@@ -241,8 +271,9 @@ app.get('/lands', checkAuth, function(req, res) {
     }
 );
 
-app.get('/ruins', checkAuth, function(req, res) {
-        Ruin.findKingdomCounts(function(err, result) {
+app.get('/ruins', checkAuth, localQuery, function(req, res) {
+        var level = req.query.level ? parseInt(req.query.level) : null;
+        Ruin.findKingdomCounts(level, function(err, result) {
             if(err) {
                 console.log("Error: ", err);
                 res.redirect('/error');
@@ -262,11 +293,19 @@ app.get('/lands/:x/:y', checkAuth, function(req, res) {
             console.log("Error: ", err);
             res.redirect('/error');
         } else {
-            res.render("lands", {
-                title: "MyMap - " + x + "-" + y + " királyság területei",
-                x: x,
-                y: y,
-                lands: kingdomMap
+            fillImageUrls(kingdomMap, function(err) {
+                if(err) {
+                    console.log("Error generatimg image urls: " + err);
+                    res.redirect('/error');
+                }
+                else
+                    res.render("lands", {
+                        title: "MyMap - " + x + "-" + y + " királyság területei",
+                        x: x,
+                        y: y,
+                        lands: kingdomMap
+                    });
+            
             });
         }
     });
@@ -291,6 +330,6 @@ app.get('/ruins/:x/:y', checkAuth, function(req, res) {
     });
 });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(5000, function(){
+  console.log('Express server listening on port ' + 5000);
 });
