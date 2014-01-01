@@ -29,10 +29,10 @@ function add(ruin, callback) {
 	
 	instance.save(function (err) {
 		if (err) {
-		  callback(err);
+            callback(err);
 		}
 		else {
-		  callback(null, instance);
+            callback(null, instance);
 		}
 	});	
 };

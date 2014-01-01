@@ -1,4 +1,5 @@
 var db = require('../lib/db_mylands'),
+    cache = require('../lib/cache'),
     validator = require('./validator'),
     HashMap = require('hashmap').HashMap;
 
@@ -34,7 +35,7 @@ var MyLand = db.mongoose.model('Land', LandSchema);
 
 module.exports.addLand = add;
 module.exports.findLands = findAll;
-module.exports.findKingdomCounts = findKingdomCounts;
+module.exports.findKingdomCounts = findKingdomCountsFromCache;
 module.exports.findKingdom = findKingdom;
 
 function add(landVO, callback) {
@@ -57,10 +58,13 @@ function add(landVO, callback) {
 	
 	instance.save(function (err) {
 		if (err) {
-		  callback(err);
+            callback(err);
 		}
 		else {
-		  callback(null, instance);
+            cache.memoryCache.del("lands");
+            cache.memoryCache.del("lands-" + instance.city_level);
+            
+            callback(null, instance);
 		}
 	});	
 };
@@ -79,6 +83,13 @@ function findAll(callback) {
 	});
 };
 
+function findKingdomCountsFromCache(level, callback) {
+    var key = level ? "lands-" + level : "lands";
+    cache.memoryCache.wrap(key, function(cacheCallback) {
+            findKingdomCounts(level, cacheCallback);
+    }, callback);
+}
+
 function findKingdomCounts(level, callback) {
    var levelCondition = level != null ? {city_level: level} : {};
    var group = {
@@ -95,7 +106,7 @@ function findKingdomCounts(level, callback) {
     };
 
     MyLand.collection.group(group.key, group.cond, group.initial, group.reduce, group.finalize, true, function(err, results) {
-        console.log('kingdom counts %j', results.length);
+        console.log('Kingdom counts in DB: %j', results.length);
         
         if(err) {
             callback(err);

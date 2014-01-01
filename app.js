@@ -238,7 +238,7 @@ app.post('/ruins/add', checkAuth, checkAdmin, function(req, res) {
             var errorMessage = "'" + coordinate + "' romot nem sikerült elmenteni!";
             res.send(errorMessage, 500);
         } else {
-            res.send(ruin);
+            res.json(ruin, 200);
         }
     });
 });
