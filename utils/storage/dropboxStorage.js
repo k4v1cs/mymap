@@ -25,7 +25,7 @@ function uploadImage(imagePath, callback) {
 function getUrlFromCache(name, callback) {
 
     cache.memoryCache.wrap(name, function(cacheCallback) {
-        getUrlFromDropbox(name, cacheCallback);
+        getUrl(name, cacheCallback);
     }, callback);
 };
 
