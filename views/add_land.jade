@@ -4,54 +4,61 @@ block content
   div.container
       if message.length
         div.info-message=message
+            span.close x
+      if !isEmpty(errors)
+        div.error-message
+            ul
+                each invalidField in errors
+                    li!=invalidField.msg
+            span.close x
       h1 Új terület hozzáadása
       form(action="/lands/add", method="POST")
         div(class="coordinates input-container clearfix")
             div
                 label X
-                input(name="x", autocomplete="off")
+                input(name="x", autocomplete="off", value="#{model ? model.x : ''}")
             div
                 label Y
-                input(name="y", autocomplete="off")
+                input(name="y", autocomplete="off", value="#{model ? model.y : ''}")
             div
                 label Z
-                input(name="z", autocomplete="off")
+                input(name="z", autocomplete="off", value="#{model ? model.z : ''}")
         div.input-container
             label Típus
             div(class="type-btns clearfix")
-                span(class="btn type", data-value="MOUNTAINS") Hegyek
-                span(class="btn type", data-value="HOLY LAND") Szent föld
-                span(class="btn type", data-value="FOREST") Erdő
-                span(class="btn type", data-value="DESERT") Sivatag
-                span(class="btn type", data-value="PRAIRIE") Puszta
-                span(class="btn type", data-value="CURSED FOREST") Elátkozott erdő
-                span(class="btn type", data-value="MAGICAL FOREST") Varázs erdő
-                span(class="btn type", data-value="DEAD LAND") Halott föld
-                input(type="hidden", name="type")
+                span(class="btn type#{model && model.type == 'MOUNTAINS' ? ' selected' : ''}", data-value="MOUNTAINS") Hegyek
+                span(class="btn type#{model && model.type == 'HOLY LAND' ? ' selected' : ''}", data-value="HOLY LAND") Szent föld
+                span(class="btn type#{model && model.type == 'FOREST' ? ' selected' : ''}", data-value="FOREST") Erdő
+                span(class="btn type#{model && model.type == 'DESERT' ? ' selected' : ''}", data-value="DESERT") Sivatag
+                span(class="btn type#{model && model.type == 'PRAIRIE' ? ' selected' : ''}", data-value="PRAIRIE") Puszta
+                span(class="btn type#{model && model.type == 'CURSED FOREST' ? ' selected' : ''}", data-value="CURSED FOREST") Elátkozott erdő
+                span(class="btn type#{model && model.type == 'MAGICAL FOREST' ? ' selected' : ''}", data-value="MAGICAL FOREST") Varázs erdő
+                span(class="btn type#{model && model.type == 'DEAD LAND' ? ' selected' : ''}", data-value="DEAD LAND") Halott föld
+                input(type="hidden", name="type", value="#{model ? model.type : ''}")
         div.input-container
             label Mezők száma
-            input(name="fields", autocomplete="off")
+            input(name="fields", autocomplete="off", value="#{model ? model.fields : ''}")
         div.input-container
             label Város maximális szintje
-            input(name="cityLevel", autocomplete="off")
+            input(name="cityLevel", autocomplete="off", value="#{model ? model.cityLevel : ''}")
         div.input-container
             label Akadályok száma
-            input(name="obstacles", autocomplete="off")
+            input(name="obstacles", autocomplete="off", value="#{model ? model.obstacles : ''}")
         div.input-container
             label Búza
-            input(name="grain.outer", autocomplete="off")
+            input(name="grain.outer", autocomplete="off", value="#{model ? model['grain.outer'] : ''}")
         div.input-container
             label Vas
-            input(name="iron.outer", autocomplete="off")
+            input(name="iron.outer", autocomplete="off", value="#{model ? model['iron.outer'] : ''}")
         div(class="input-container clearfix")
             label.main Kő
             div.sub-container
                 label.sub Belső
-                input(name="stone.inner", autocomplete="off")
+                input(name="stone.inner", autocomplete="off", value="#{model ? model['stone.inner'] : ''}")
             div.sub-container
                 label.sub Külső
-                input(name="stone.outer", autocomplete="off")
+                input(name="stone.outer", autocomplete="off", value="#{model ? model['stone.outer'] : ''}")
         div(class="input-container")
             input.btn(type="submit", value="Mentés")
-        img.picture
-        input.picture(type="hidden", name="picture")
+        img.picture(src="#{model ? model.picture : ''}")
+        input.picture(type="hidden", name="picture", value="#{model ? model.picture : ''}")

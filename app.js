@@ -6,17 +6,14 @@
 var express = require('express')
   , routes = require('./routes')
   , landRoutes = require('./routes/lands')
+  , ruinRoutes = require('./routes/ruins')
   , http = require('http')
   , path = require('path')
-  , fs = require('fs')
-  , async = require('async')
   , everyauth = require('everyauth')
   , flash = require('connect-flash')
-  , Land = require('./models/Land.js')
-  , Ruin = require('./models/Ruin.js')
-  , User = require('./models/User.js')
-  , imgUtil = require('./utils/imageUtil.js')
-  , storage = require('./utils/storage/storage.js');
+  , expressValidator = require('express-validator')
+  , User = require('./models/User')
+  , jadeHelper = require('./utils/jadeHelper');
 
 /*everyauth*/
 
@@ -94,6 +91,9 @@ app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
+app.use(expressValidator());
+app.use(jadeHelper.isEmptyMiddleware);
+app.use(jadeHelper.setQueryMiddleware);
 app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.cookieParser('mr ripley'));
@@ -106,7 +106,7 @@ app.use(app.router);
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 } 
- 
+
 function checkAuth(req, res, next) {
   if (!req.user) {
     req.flash('message', 'Jelentkezz be!');
@@ -125,212 +125,22 @@ function checkAdmin(req, res, next) {
   }
 }
 
-function localQuery(req, res, next) {
-  res.locals.query = req.query;
-  next();
-};
-
-function fillImageUrls(kingdomMap, callback) {
-    var calls = [];
-    kingdomMap.forEach(function(value, key) {
-        calls.push(function(callbackPush) {
-            console.log("pushing element %s", value.picture);
-            storage.getImageUrl(value.picture, function(url) {
-                value.pictureUrl = url;
-                callbackPush(null, url);
-            });
-        });
-    });
-    
-    async.parallel(calls, function(err, result) {
-        /* this code will run after all calls finished the job or
-           when any of the calls passes an error */
-        if (err)
-            callback(err);
-        else
-            callback();
-    });
-}
-
 app.get('/', checkAuth, routes.index);
 app.get('/error', routes.error);
 
-app.get('/lands/list', checkAuth, checkAdmin, function(req, res) {
-    var lands;
-    Land.findLands(function(err, land) {
-        if(!err) {
-            var landPics = [];
-            for (var i = 0; i < land.length; i++) {
-                var l = land[i];
-                landPics.push({
-                    img: l.picture,
-                    type: l.type
-                });
-                
-            }
-            res.render('list_land', { 
-                    title: "MyMap - foobar",
-                    lands: landPics
-            });
-        }
-    });
-    
-});
 app.get('/lands/add', checkAuth, checkAdmin, landRoutes.add);
-app.post('/lands/add', checkAuth, checkAdmin, function(req, res) {
+app.post('/lands/add', checkAuth, checkAdmin, landRoutes.saveLand);
 
-    var coordinate = req.body.x + "-" + req.body.y + "-" + req.body.z;
-    var imageName = coordinate + ".jpg";
-    console.log("Saving new land: " + coordinate);
-    
-    var newLand = {
-        x: req.body.x,
-        y: req.body.y,
-        z: req.body.z,
-        fields: req.body.fields,
-        cityLevel: req.body.cityLevel,
-        type: req.body.type,
-        obstacles: req.body.obstacles,
-        grain: {
-            inner: 0,
-            outer: req.body['grain.outer']
-        },
-        iron: {
-            inner: 0,
-            outer: req.body['iron.outer']
-        },
-        stone: {
-            inner: req.body['stone.inner'],
-            outer: req.body['stone.outer']
-        },
-        picture: imageName
-    };
-    
-    Land.addLand(newLand, function(err, land) {
-        if (err) {
-            console.log("Error: ", err);
-            res.redirect('/error');
-        } else {
-            var image = new Buffer(req.body.picture.substr(req.body.picture.indexOf('base64') + 7), 'base64');
-            imgUtil.saveImage(image, coordinate);
-            req.flash("message", "'" + coordinate + "' terület sikeresen elmentve!");
-            res.redirect('/lands/add');
-        }
-    });
-});
+app.post('/ruins/add', checkAuth, checkAdmin, ruinRoutes.add);
+app.post('/ruins/remove', checkAuth, checkAdmin, ruinRoutes.remove);
 
-app.post('/ruins/add', checkAuth, checkAdmin, function(req, res) {
+app.get('/lands', checkAuth, landRoutes.lands);
+app.get('/ruins', checkAuth, ruinRoutes.ruins);
 
-    var coordinate = req.body.x + "-" + req.body.y + "-" + req.body.z;
-    console.log("Saving new ruin: " + coordinate);
-    
-    var newRuin = {
-        x: req.body.x,
-        y: req.body.y,
-        z: req.body.z,
-        level: req.body.level,
-        agressive: req.body.agressive ? true : false
-    };
-    
-    Ruin.addRuin(newRuin, function(err, ruin) {
-        if (err) {
-            console.log("Error: ", err);
-            var errorMessage = "'" + coordinate + "' romot nem sikerült elmenteni!";
-            res.send(errorMessage, 500);
-        } else {
-            res.json(ruin, 200);
-        }
-    });
-});
+app.get('/lands/:x/:y', checkAuth, landRoutes.showLand);
+app.get('/ruins/:x/:y', checkAuth, ruinRoutes.showRuins);
 
-app.post('/ruins/remove', checkAuth, checkAdmin, function(req, res) {
-    var coordinate = req.body.x + "-" + req.body.y + "-" + req.body.z;
-    console.log("Removing ruin: " + coordinate);
-    
-    Ruin.removeRuin(req.body.x, req.body.y, req.body.z, function(err) {
-        if(err) {
-            console.log("Error: ", err);
-            var errorMessage = "'" + coordinate + "' romot nem sikerült eltávolítani!";
-            res.send(errorMessage, 500);
-        } else {
-            res.send(200);
-        }
-    });
-});
-
-app.get('/lands', checkAuth, localQuery, function(req, res) {
-        var level = req.query.level ? parseInt(req.query.level) : null;
-        Land.findKingdomCounts(level, function(err, result) {
-            if(err) {
-                console.log("Error: ", err);
-                res.redirect('/error');
-            } else {
-                res.render("map", {title: "MyMap - Királyságok", kingdomCounts: result, mapType: 'lands'});
-            }
-        })
-    }
-);
-
-app.get('/ruins', checkAuth, localQuery, function(req, res) {
-        var level = req.query.level ? parseInt(req.query.level) : null;
-        Ruin.findKingdomCounts(level, function(err, result) {
-            if(err) {
-                console.log("Error: ", err);
-                res.redirect('/error');
-            } else {
-                res.render("map", {title: "MyMap - Királyságok", kingdomCounts: result, mapType: 'ruins'});
-            }
-        })
-    }
-);
-
-app.get('/lands/:x/:y', checkAuth, function(req, res) {
-    var x = req.params.x;
-    var y = req.params.y;
-    
-    Land.findKingdom(x, y, function(err, kingdomMap) {
-        if(err) {
-            console.log("Error: ", err);
-            res.redirect('/error');
-        } else {
-            fillImageUrls(kingdomMap, function(err) {
-                if(err) {
-                    console.log("Error generatimg image urls: " + err);
-                    res.redirect('/error');
-                }
-                else
-                    res.render("lands", {
-                        title: "MyMap - " + x + "-" + y + " királyság területei",
-                        x: x,
-                        y: y,
-                        lands: kingdomMap
-                    });
-            
-            });
-        }
-    });
-});
-
-app.get('/ruins/:x/:y', checkAuth, function(req, res) {
-    var x = req.params.x;
-    var y = req.params.y;
-    
-    Ruin.findKingdom(x, y, function(err, kingdomMap) {
-        if(err) {
-            console.log("Error: ", err);
-            res.redirect('/error');
-        } else {
-            res.render("ruins", {
-                title: "MyMap - " + x + "-" + y + " királyság romjai",
-                x: x,
-                y: y,
-                ruins: kingdomMap
-            });
-        }
-    });
-});
-
-var port = process.env.PORT  || 5000;
+var port = app.get('port');
 http.createServer(app).listen(port, function(){
   console.log('Express server listening on port ' + port);
 });
