@@ -233,7 +233,7 @@ div.error-msg {
     height: 10px;
     border-style: solid solid none none;
     border-width: 1px;
-    border-color: rgb(114, 113, 85);
+    border-color: rgb(95, 93, 24);
     position: relative;
 }
 .kingdoms td a {
@@ -325,9 +325,6 @@ div.error-msg {
     display: block;
     height: 100%
 }
-.kingdom td .stats {
-    
-}
 .kingdom td .level {
     position: absolute;
     top: 0;
@@ -403,6 +400,9 @@ div.error-msg {
     width: 20px;
     margin: 0;
     padding: 0;
+}
+.kingdom td.outline {
+    box-shadow: inset 0 0 10px 5px rgb(9, 53, 194);
 }
 /*header*/
 .header {

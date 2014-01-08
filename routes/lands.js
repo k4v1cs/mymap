@@ -32,8 +32,8 @@ exports.lands = function(req, res) {
     Renders the lands of the specified kingdom
 */
 exports.showLand = function(req, res) {
-    var x = req.params.x;
-    var y = req.params.y;
+    var x = req.params.x,
+        y = req.params.y;
     
     Land.findKingdom(x, y, function(err, kingdomMap) {
         if(err) {

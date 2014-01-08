@@ -26,7 +26,7 @@ block content
                         else
                             - var count = 0
                         td.kingdom(data-x=j, data-y=i, data-count=count)
-                            a(href="/#{mapType}/" + j + "/" + i)
+                            a(href="/#{mapType}/" + j + "/" + i + "#{query.level ? '?outline=' + query.level : ''}")
                             div.info-bar(style="display: none")
                                 div="X: " + j
                                 div="Y: " + i
