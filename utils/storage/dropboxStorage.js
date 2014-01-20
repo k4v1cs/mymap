@@ -34,8 +34,9 @@ function getUrl(name, callback) {
         if(error) {
             console.log(dropbox.showError(error));
             callback(error);
+        } else {
+            callback(null, url.url);
         }
-        callback(null, url.url);
     });
 }
     

@@ -83,18 +83,27 @@ function findAll(callback) {
 	});
 };
 
-function findKingdomCountsFromCache(level, callback) {
-    var key = level ? "lands-" + level : "lands";
+function findKingdomCountsFromCache(level, type, callback) {
+
+    var key = buildLandsCacheKey(level, type);
+    
     cache.memoryCache.wrap(key, function(cacheCallback) {
-            findKingdomCounts(level, cacheCallback);
+            findKingdomCounts(level, type, cacheCallback);
     }, callback);
 }
 
-function findKingdomCounts(level, callback) {
-   var levelCondition = level != null ? {city_level: level} : {};
-   var group = {
+function findKingdomCounts(level, type, callback) {
+    var condition = {};
+    if(level) {
+        condition.city_level = level;
+    }
+    if(type) {
+        condition.type = type;
+    }
+    
+    var group = {
        key: {x: 1, y:1},
-       cond: levelCondition,
+       cond: condition,
        reduce: function ( curr, result ) {
                 result.count++;
        },
@@ -147,4 +156,15 @@ function buildKingdomMap(results) {
     }
     
     return map;
+}
+
+function buildLandsCacheKey(level, type) {
+    var key = "lands";
+    if(level) {
+        key = key + "-" + level;
+    }
+    if(type) {
+        key = key + "-" + type;
+    }
+    return key;
 }

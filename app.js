@@ -94,6 +94,7 @@ app.use(express.bodyParser());
 app.use(expressValidator());
 app.use(jadeHelper.isEmptyMiddleware);
 app.use(jadeHelper.setQueryMiddleware);
+app.use(jadeHelper.makeUrlWithQuery);
 app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.cookieParser('mr ripley'));

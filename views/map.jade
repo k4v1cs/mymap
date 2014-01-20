@@ -4,12 +4,23 @@ block content
     div.container
         h1 Királyságok
         div.type-btns
-            a.btn(href="/lands", class="#{mapType === 'lands' ? 'selected' : ''}") Területek
-            a.btn(href="/ruins", class="#{mapType === 'ruins' ? 'selected' : ''}") Romok
+            a.btn(href="#{makeUrlWithQuery('/lands')}", class="#{mapType === 'lands' ? 'selected' : ''}") Területek
+            a.btn(href="#{makeUrlWithQuery('/ruins')}", class="#{mapType === 'ruins' ? 'selected' : ''}") Romok
         div.type-btns
-            - for(l=1; l<=6; l++)
-                a.btn.small(href="?level=#{l}", class="#{query.level == l ? 'selected' : ''}")=l
-        table.kingdoms(cellpadding=3, cellspacing=0, class="#{mapType}")
+            - var maxL = mapType == 'lands' ? 5 : 6;
+            - for(l=1; l<=maxL; l++)
+                a.btn.small(href="#{makeUrlWithQuery('level', l)}", class="#{query.level == l ? 'selected' : ''}")=l
+        if mapType == 'lands'
+            div(class="type-btns")
+                a.btn(class="#{query.type == 'MOUNTAINS' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'MOUNTAINS')}") Hegyek
+                a.btn(class="#{query.type == 'HOLY LAND' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'HOLY LAND')}") Szent föld
+                a.btn(class="#{query.type == 'FOREST' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'FOREST')}") Erdő
+                a.btn(class="#{query.type == 'DESERT' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'DESERT')}") Sivatag
+                a.btn(class="#{query.type == 'PRAIRIE' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'PRAIRIE')}") Puszta
+                a.btn(class="#{query.type == 'CURSED FOREST' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'CURSED FOREST')}") Elátkozott erdő
+                a.btn(class="#{query.type == 'MAGICAL FOREST' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'MAGICAL FOREST')}") Varázs erdő
+                a.btn(class="#{query.type == 'DEAD LAND' ? 'selected' : ''}", href="#{makeUrlWithQuery('type', 'DEAD LAND')}") Halott föld
+        table.map(cellpadding=3, cellspacing=0, class="#{mapType}")
             tr.x
                 td
                 - for (j=1; j<=73; j++)
@@ -26,7 +37,7 @@ block content
                         else
                             - var count = 0
                         td.kingdom(data-x=j, data-y=i, data-count=count)
-                            a(href="/#{mapType}/" + j + "/" + i + "#{query.level ? '?outline=' + query.level : ''}")
+                            a(href="#{makeUrlWithQuery('/' + mapType + '/' + j + '/' + i)}")
                             div.info-bar(style="display: none")
                                 div="X: " + j
                                 div="Y: " + i

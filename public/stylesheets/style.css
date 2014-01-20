@@ -121,7 +121,8 @@ img.picture {
 }
 
 .type-btns {
-    height: 50px;
+    min-height: 20px;
+    padding-bottom: 15px;
 }
 
 .type-btns .btn {
@@ -129,7 +130,7 @@ img.picture {
     float: left;
     margin-right: 10px;
     margin-top: 10px;
-    min-width: 120px;
+    min-width: 114px;
 }
 
 .type-btns .btn.small {
@@ -218,17 +219,17 @@ div.error-msg {
     text-align: left;
 }
 /*lands table*/
-.kingdoms {
-    margin-top: 10px;
+.map {
+    margin-top: 20px;
     border: 2px solid rgb(114, 113, 85) !important;
 }
-.kingdoms tr:first-child td {
+.map tr:first-child td {
     border-top-style: none;
 }
-.kingdoms td:last-child {
+.map td:last-child {
     border-right-style: none;
 }
-.kingdoms td {
+.map td {
     width: 10px;
     height: 10px;
     border-style: solid solid none none;
@@ -236,12 +237,12 @@ div.error-msg {
     border-color: rgb(95, 93, 24);
     position: relative;
 }
-.kingdoms td a {
+.map td a {
     display: block;
     width: 100%;
     height: 100%;
 }
-.kingdoms .info-bar {
+.map .info-bar {
     position: absolute;
     top: -57px;
     right: -68px;
@@ -253,7 +254,7 @@ div.error-msg {
     color: rgba(114, 113, 85, 1);
     padding: 5px 3px;
 }
-.kingdoms .info-bar .arrow {
+.map .info-bar .arrow {
     width: 0; 
     height: 0; 
     border-bottom: 7px solid rgba(114, 113, 85, 1); 
@@ -262,16 +263,16 @@ div.error-msg {
     left: 0;
     bottom: 0;
 }
-.kingdoms td.selected {
+.map td.selected {
     background-color: rgb(114, 113, 85) !important;
     color: white;
 }
-.kingdoms tr.x td, .kingdoms td[class|=y] {
+.map tr.x td, .map td[class|=y] {
     background-color: rgba(114, 113, 85, 0.2);
     font-size: 10px;
     padding: 1px;
 }
-.kingdoms tr.x div, .kingdoms td[class|=y] div{
+.map tr.x div, .map td[class|=y] div{
     width: 12px;
     height: 15px;
     text-align: center;

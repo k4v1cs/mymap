@@ -17,8 +17,10 @@ expressValidator.Validator.prototype.isValidFields = function() {
     Render lands map
 */
 exports.lands = function(req, res) {
-    var level = req.query.level ? parseInt(req.query.level) : null;
-    Land.findKingdomCounts(level, function(err, result) {
+    var level = req.query.level ? parseInt(req.query.level) : null,
+        type = req.query.type ? req.query.type : null;
+        console.log(req.url);
+    Land.findKingdomCounts(level, type, function(err, result) {
         if(err) {
             console.log("Error: ", err);
             res.redirect('/error');
