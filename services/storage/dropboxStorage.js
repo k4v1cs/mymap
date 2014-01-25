@@ -1,5 +1,5 @@
-var dropbox = require("../../lib/dropbox.js"),
-    cache = require("../../lib/cache.js"),
+var dropbox = require("../../config/dropbox.js"),
+    cache = require("../../config/cache.js"),
     path = require('path'),
     fs = require('fs');
 

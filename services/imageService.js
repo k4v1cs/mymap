@@ -1,7 +1,7 @@
 var fs = require('fs'),
     path = require('path'),
     easyimg = require('easyimage'),
-    storage = require('./storage/storage.js');
+    storage = require('./storage/storageService');
 
 var DEST_DIR = path.join(__dirname, 'temp'),
     EXT = ".png",

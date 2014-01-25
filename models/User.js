@@ -1,4 +1,4 @@
-var db = require('../lib/db_mylands')
+var db = require('../config/db')
     crypto = require('crypto');
 
 var UserSchema = new db.Schema({

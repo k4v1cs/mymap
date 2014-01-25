@@ -1,5 +1,5 @@
-var db = require('../lib/db_mylands'),
-    cache = require('../lib/cache'),
+var db = require('../config/db'),
+    cache = require('../config/cache'),
     validator = require('./validator'),
     HashMap = require('hashmap').HashMap;
 

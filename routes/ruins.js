@@ -1,4 +1,5 @@
-﻿var Ruin = require('../models/Ruin');
+﻿var Ruin = require('../models/Ruin'),
+    validator = require('./validator/ruinValidator');
 
 /**
     Render ruins map
@@ -45,9 +46,9 @@ exports.add = function(req, res) {
     var coordinate = req.body.x + "-" + req.body.y + "-" + req.body.z;
     console.log("Saving new ruin: " + coordinate);
     
-    req.checkBody('level', 'A rom szintje 1-6 közti egész szám kell legyen!')
-        .isNumeric().min(1).max(6);
-    var mappedErrors = req.validationErrors(true);
+    /*req.checkBody('level', 'A rom szintje 1-6 közti egész szám kell legyen!')
+        .isNumeric().min(1).max(6);*/
+    var mappedErrors = validator.validate(req);
     
     if(mappedErrors) {
         res.send(mappedErrors.level.msg, 500);

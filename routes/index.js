@@ -4,7 +4,6 @@
  */
 
 exports.index = function(req, res){
-  //res.render('index', { title: 'MyMap' });
   res.redirect('/ruins')
 };
 exports.error = function(req, res){

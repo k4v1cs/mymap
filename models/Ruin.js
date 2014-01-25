@@ -1,4 +1,4 @@
-var db = require('../lib/db_mylands')
+var db = require('../config/db')
    ,HashMap = require('hashmap').HashMap;
 
 var RuinSchema = new db.Schema({

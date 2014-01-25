@@ -1,0 +1,1 @@
+exports.validate = function(req) {    req.checkBody('level', 'A rom szintje 1-6 közti egész szám kell legyen!')        .isNumeric().min(1).max(6);    var mappedErrors = req.validationErrors(true);        return mappedErrors;}
