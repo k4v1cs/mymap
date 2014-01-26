@@ -11,7 +11,7 @@ var express = require('express')
   , path = require('path')
   , flash = require('connect-flash')
   , expressValidator = require('express-validator')
-  , jadeHelper = require('./services/jadeHelper')
+  , jadeHelper = require('./jadeHelper')
   , auth = require('./auth/auth');
 
 var everyauth = auth.initialize();
