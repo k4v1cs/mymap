@@ -1,5 +1,6 @@
 var Dropbox = require("dropbox"),
-    fs = require("fs");
+    fs = require("fs"),
+    log = require('./log4js').getLogger();
 
 var client = null,
     tlsOptions = {
@@ -24,11 +25,11 @@ function initialize() {
             if (error) {
                 showError(error);
             } else {
-                console.log("Dropbox client authenticated.");
+                console.info("Dropbox client authenticated.");
             }
         });
     } else {
-        console.log("Dropbox env is not set!");
+        console.info("Dropbox env is not set!");
     }
 }
 

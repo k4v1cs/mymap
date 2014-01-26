@@ -1,7 +1,8 @@
 var fs = require('fs'),
     path = require('path'),
     easyimg = require('easyimage'),
-    storage = require('./storage/storageService');
+    storage = require('./storage/storageService'),
+    log = require('../config/log4js').getLogger();
 
 var DEST_DIR = path.join(__dirname, 'temp'),
     EXT = ".png",

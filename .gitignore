@@ -1,4 +1,5 @@
 node_modules/*
 dump/*
 env/*.bat
+logs/*
 app-test.js

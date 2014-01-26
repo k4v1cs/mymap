@@ -12,8 +12,9 @@ var express = require('express')
   , flash = require('connect-flash')
   , expressValidator = require('express-validator')
   , jadeHelper = require('./jadeHelper')
-  , auth = require('./auth/auth');
-
+  , auth = require('./auth/auth')
+  , log = require('./config/log4js').getLogger();
+  
 var everyauth = auth.initialize();
   
 var app = express();
@@ -60,5 +61,5 @@ app.get('/ruins/:x/:y', auth.checkAuth, ruinRoutes.showRuins);
 
 var port = app.get('port');
 http.createServer(app).listen(port, function(){
-  console.log('Express server listening on port ' + port);
+  log.info('Express server listening on port ' + port);
 });

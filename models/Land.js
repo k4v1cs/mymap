@@ -1,7 +1,8 @@
 var db = require('../config/db'),
     cache = require('../config/cache'),
     validator = require('./validator'),
-    HashMap = require('hashmap').HashMap;
+    HashMap = require('hashmap').HashMap,
+    log = require('../config/log4js').getLogger();
 
 function defaultNumberGetter(value) {
     return value === null ? 0 : value;
@@ -39,6 +40,7 @@ module.exports.findKingdomCounts = findKingdomCountsFromCache;
 module.exports.findKingdom = findKingdom;
 
 function add(landVO, callback) {
+    log.debug('Saving new land to db: ', landVO.x, landVO.y, landVO.z);
 	var instance = new MyLand();
 	
 	instance.x = landVO.x;
@@ -57,6 +59,7 @@ function add(landVO, callback) {
 	instance.picture = landVO.picture;
 	
 	instance.save(function (err) {
+        log.debug('New land saved to db: ', instance.x, instance.y, instance.z);
 		if (err) {
             callback(err);
 		}

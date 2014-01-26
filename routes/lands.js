@@ -1,9 +1,10 @@
 ﻿var async = require('async'),
     util = require('util'),
     Land = require('../models/Land'),
-    imgUtil = require('../services/imageService'),
+    imgService = require('../services/imageService'),
     storage = require('../services/storage/storageService'),
-    validator = require('./validator/landValidator');
+    validator = require('./validator/landValidator'),
+    log = require('../config/log4js').getLogger();
 
 /**
     Render lands map
@@ -127,7 +128,7 @@ function saveNewLand(req, res) {
             }
         } else {
             var image = new Buffer(req.body.picture.substr(req.body.picture.indexOf('base64') + 7), 'base64');
-            imgUtil.saveImage(image, coordinate);
+            imgService.saveImage(image, coordinate);
             req.flash("message", "'" + coordinate + "' terület sikeresen elmentve!");
             res.redirect('/lands/add');
         }
@@ -135,7 +136,7 @@ function saveNewLand(req, res) {
 }
 
 function renderAddLandWithErrors(req, res, mappedErrors) {
-    console.log("There were validation errors: " + mappedErrors);
+    log.warn("There were validation errors: ", mappedErrors);
     res.render('add_land', { 
         title: 'MyMap - Új terület',
         message: '',
