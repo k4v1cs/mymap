@@ -37,10 +37,11 @@ block content
                         else
                             - var count = 0
                         td.kingdom(data-x=j, data-y=i, data-count=count)
-                            a(href="#{makeUrlWithQuery('/' + mapType + '/' + j + '/' + i)}")
-                            div.info-bar(style="display: none")
-                                div="X: " + j
-                                div="Y: " + i
-                                div="Össz: " + count
-                                <div class='arrow'>
+                            div.cell-container
+                                a(href="#{makeUrlWithQuery('/' + mapType + '/' + j + '/' + i)}")
+                                div.info-bar(style="display: none")
+                                    div="X: " + j
+                                    div="Y: " + i
+                                    div="Össz: " + count
+                                    <div class='arrow'>
             

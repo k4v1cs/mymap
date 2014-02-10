@@ -31,6 +31,12 @@ h1 {
     font-size: 18px;
 }
 
+td div.cell-container {
+    height: 100%;
+    overflow: visible;
+    position: relative;
+}
+
 /*form*/
 form {
     position: relative;
@@ -253,6 +259,7 @@ div.error-msg {
     background-color: white;
     color: rgba(114, 113, 85, 1);
     padding: 5px 3px;
+    z-index: 100;
 }
 .map .info-bar .arrow {
     width: 0; 
@@ -291,7 +298,6 @@ div.error-msg {
     vertical-align: text-top;
     width: 118px;
     height: 118px;
-    position: relative;
 }
 .kingdom td.mountains {
     background: url('../images/static/ter4.png') repeat;
@@ -324,7 +330,8 @@ div.error-msg {
     color: rgb(255, 204, 0);
     text-decoration: none;
     display: block;
-    height: 100%
+    position: relative;
+    height: 100%;
 }
 .kingdom td .level {
     position: absolute;
@@ -354,7 +361,7 @@ div.error-msg {
 .kingdom td .stats {
     color: yellow;
     font-size: 14px;
-    width: 45px;
+    width: 46px;
     height: 90px;
     margin-top: 5px;
     border-radius: 5px;
@@ -409,8 +416,10 @@ div.error-msg {
 .header {
     width: 100%;
     height: 100px;
-    /*background: url('../images/static/header-cut.jpg') no-repeat;*/
-    background: -webkit-linear-gradient(180deg, rgb(80, 79, 48), rgb(156, 155, 115));
+    background: -webkit-linear-gradient(180deg, rgb(80, 79, 48), rgb(156, 155, 115)); /* For Safari */
+    background: -o-linear-gradient(180deg, rgb(80, 79, 48), rgb(156, 155, 115)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(180deg, rgb(80, 79, 48), rgb(156, 155, 115)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(180deg, rgb(80, 79, 48), rgb(156, 155, 115)); /* Standard syntax */
     margin-bottom: 20px;
 }
 .header .logo {

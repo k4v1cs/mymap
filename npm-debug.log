@@ -1,0 +1,86 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'node-loggly',
+1 verbose cli   '--save' ]
+2 info using npm@1.2.32
+3 info using node@v0.10.12
+4 verbose node symlink C:\Program Files (x86)\nodejs\\node.exe
+5 verbose read json c:\Works\NodeJs\myLands\package.json
+6 warn package.json mymap@0.0.1 No repository field.
+7 verbose read json c:\Works\NodeJs\myLands\node_modules\async\package.json
+8 verbose read json c:\Works\NodeJs\myLands\node_modules\cache-manager\package.json
+9 verbose read json c:\Works\NodeJs\myLands\node_modules\connect-flash\package.json
+10 verbose read json c:\Works\NodeJs\myLands\node_modules\dropbox\package.json
+11 verbose read json c:\Works\NodeJs\myLands\node_modules\easyimage\package.json
+12 verbose read json c:\Works\NodeJs\myLands\node_modules\everyauth\package.json
+13 verbose read json c:\Works\NodeJs\myLands\node_modules\express\package.json
+14 verbose read json c:\Works\NodeJs\myLands\node_modules\express-validator\package.json
+15 verbose read json c:\Works\NodeJs\myLands\node_modules\hashmap\package.json
+16 verbose read json c:\Works\NodeJs\myLands\node_modules\jade\package.json
+17 verbose read json c:\Works\NodeJs\myLands\node_modules\log4js\package.json
+18 verbose read json c:\Works\NodeJs\myLands\node_modules\mongoose\package.json
+19 verbose read json c:\Works\NodeJs\myLands\node_modules\request\package.json
+20 verbose from cache c:\Works\NodeJs\myLands\package.json
+21 verbose readDependencies using package.json deps
+22 verbose cache add [ 'node-loggly', null ]
+23 verbose cache add name=undefined spec="node-loggly" args=["node-loggly",null]
+24 verbose parsed url { protocol: null,
+24 verbose parsed url   slashes: null,
+24 verbose parsed url   auth: null,
+24 verbose parsed url   host: null,
+24 verbose parsed url   port: null,
+24 verbose parsed url   hostname: null,
+24 verbose parsed url   hash: null,
+24 verbose parsed url   search: null,
+24 verbose parsed url   query: null,
+24 verbose parsed url   pathname: 'node-loggly',
+24 verbose parsed url   path: 'node-loggly',
+24 verbose parsed url   href: 'node-loggly' }
+25 silly lockFile 77154d9b-node-loggly node-loggly
+26 verbose lock node-loggly C:\Documents and Settings\Administrator\Application Data\npm-cache\77154d9b-node-loggly.lock
+27 silly lockFile 77154d9b-node-loggly node-loggly
+28 silly lockFile 77154d9b-node-loggly node-loggly
+29 verbose addNamed [ 'node-loggly', '' ]
+30 verbose addNamed [ null, '' ]
+31 silly lockFile 9ebac008-node-loggly node-loggly@
+32 verbose lock node-loggly@ C:\Documents and Settings\Administrator\Application Data\npm-cache\9ebac008-node-loggly.lock
+33 silly addNameRange { name: 'node-loggly', range: '', hasData: false }
+34 verbose url raw node-loggly
+35 verbose url resolving [ 'https://registry.npmjs.org/', './node-loggly' ]
+36 verbose url resolved https://registry.npmjs.org/node-loggly
+37 info trying registry request attempt 1 at 13:56:06
+38 http GET https://registry.npmjs.org/node-loggly
+39 http 404 https://registry.npmjs.org/node-loggly
+40 silly registry.get cb [ 404,
+40 silly registry.get   { date: 'Sun, 26 Jan 2014 12:56:06 GMT',
+40 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R15B03)',
+40 silly registry.get     'content-type': 'application/json',
+40 silly registry.get     'cache-control': 'max-age=0',
+40 silly registry.get     'content-length': '52',
+40 silly registry.get     'accept-ranges': 'bytes',
+40 silly registry.get     via: '1.1 varnish',
+40 silly registry.get     age: '0',
+40 silly registry.get     'x-served-by': 'cache-fra1231-FRA',
+40 silly registry.get     'x-cache': 'MISS',
+40 silly registry.get     'x-cache-hits': '0',
+40 silly registry.get     'x-timer': 'S1390740966.611108780,VS0,VE129',
+40 silly registry.get     'keep-alive': 'timeout=10, max=50',
+40 silly registry.get     connection: 'Keep-Alive' } ]
+41 silly lockFile 9ebac008-node-loggly node-loggly@
+42 silly lockFile 9ebac008-node-loggly node-loggly@
+43 error 404 'node-loggly' is not in the npm registry.
+43 error 404 You should bug the author to publish it
+43 error 404
+43 error 404 Maybe try 'npm search loggly'
+43 error 404
+43 error 404 Note that you can also install from a
+43 error 404 tarball, folder, or http url, or git url.
+44 error System Windows_NT 5.2.3790
+45 error command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "node-loggly" "--save"
+46 error cwd c:\Works\NodeJs\myLands
+47 error node -v v0.10.12
+48 error npm -v 1.2.32
+49 error code E404
+50 verbose exit [ 1, true ]

@@ -11,15 +11,17 @@ block content
                         if ruins.get(z)
                             - var ruin = ruins.get(z)
                             td.ruin(class="#{ruin.agressive === true ? 'agressive' : ''}")
-                                =z
-                                div.level= ruin.level
-                                if user.role === 'ADMIN'
-                                    a.remove(href="/ruins/remove", data-x = x, data-y = y, data-z = z) X
-                                +addRuin(x, y, z)
+                                div.cell-container
+                                    =z
+                                    div.level= ruin.level
+                                    if user.role === 'ADMIN'
+                                        a.remove(href="/ruins/remove", data-x = x, data-y = y, data-z = z) X
+                                    +addRuin(x, y, z)
                         else
                             td
-                                =z
-                                +addRuin(x, y, z)
+                                div.cell-container
+                                    =z
+                                    +addRuin(x, y, z)
                             
 
 mixin addRuin(x, y, z)
