@@ -50,13 +50,13 @@ app.get('/error', routes.error);
 app.get('/lands/add', auth.checkAuth, auth.checkAdmin, landRoutes.add);
 app.post('/lands/add', auth.checkAuth, auth.checkAdmin, landRoutes.saveLand);
 
-app.post('/ruins/add', auth.checkAuth, auth.checkAdmin, ruinRoutes.add);
-app.post('/ruins/remove', auth.checkAuth, auth.checkAdmin, ruinRoutes.remove);
+app.post('/ruins/add', auth.checkAuth, ruinRoutes.add);
+app.post('/ruins/remove', auth.checkAuth, ruinRoutes.remove);
 
-app.get('/lands', auth.checkAuth, landRoutes.lands);
+app.get('/lands', auth.checkAuth, auth.checkAdmin, landRoutes.lands);
 app.get('/ruins', auth.checkAuth, ruinRoutes.ruins);
 
-app.get('/lands/:x/:y', auth.checkAuth, landRoutes.showLand);
+app.get('/lands/:x/:y', auth.checkAuth, auth.checkAdmin, landRoutes.showLand);
 app.get('/ruins/:x/:y', auth.checkAuth, ruinRoutes.showRuins);
 
 var port = app.get('port');

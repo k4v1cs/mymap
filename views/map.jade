@@ -4,7 +4,8 @@ block content
     div.container
         h1 Királyságok
         div.type-btns
-            a.btn(href="#{makeUrlWithQuery('/lands')}", class="#{mapType === 'lands' ? 'selected' : ''}") Területek
+            if user.role === 'ADMIN'
+                a.btn(href="#{makeUrlWithQuery('/lands')}", class="#{mapType === 'lands' ? 'selected' : ''}") Területek
             a.btn(href="#{makeUrlWithQuery('/ruins')}", class="#{mapType === 'ruins' ? 'selected' : ''}") Romok
         div.type-btns
             - var maxL = mapType == 'lands' ? 5 : 6;

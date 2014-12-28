@@ -14,8 +14,7 @@ block content
                                 div.cell-container
                                     =z
                                     div.level= ruin.level
-                                    if user.role === 'ADMIN'
-                                        a.remove(href="/ruins/remove", data-x = x, data-y = y, data-z = z) X
+                                    a.remove(href="/ruins/remove", data-x = x, data-y = y, data-z = z) X
                                     +addRuin(x, y, z)
                         else
                             td
@@ -25,13 +24,12 @@ block content
                             
 
 mixin addRuin(x, y, z)
-    if user.role === 'ADMIN'
-        div(style="display: none").add-ruin
-            form(action="/ruins/add")
-                input(type="hidden", name="x", value=x)
-                input(type="hidden", name="y", value=y)
-                input(type="hidden", name="z", value=z)
-                input(type="text", name="level")
-                label Agr.
-                input(type="checkbox", name="agressive", value="true")
-                input.btn(type="submit", value="OK")
+    div(style="display: none").add-ruin
+        form(action="/ruins/add")
+            input(type="hidden", name="x", value=x)
+            input(type="hidden", name="y", value=y)
+            input(type="hidden", name="z", value=z)
+            input(type="text", name="level")
+            label Agr.
+            input(type="checkbox", name="agressive", value="true")
+            input.btn(type="submit", value="OK")

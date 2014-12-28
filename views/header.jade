@@ -1,5 +1,6 @@
 div.header
-    a.menu(href="/lands") Királyságok
+    if user.role === 'ADMIN'
+        a.menu(href="/lands") Királyságok
     a.menu(href="/ruins") Romok
     if user.role === 'ADMIN'
         a.menu(href="/lands/add") Új terület
